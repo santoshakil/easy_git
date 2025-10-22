@@ -1,0 +1,5 @@
+[target.x86_64-apple-darwin]
+rustflags = ["-C", "link-arg=-lz", "-C", "link-arg=-liconv"]
+
+[target.aarch64-apple-darwin]
+rustflags = ["-C", "link-arg=-lz", "-C", "link-arg=-liconv"]
