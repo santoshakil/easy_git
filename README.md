@@ -7,7 +7,7 @@ A Flutter desktop application for managing multiple nested git repositories, bui
 [![Rust](https://img.shields.io/badge/Rust-1.89.0+-orange.svg)](https://www.rust-lang.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-> **⚠️ SECURITY WARNING**: This project is in active development and is **NOT PRODUCTION READY**. A comprehensive security audit has identified **30 vulnerabilities including 3 CRITICAL issues**. DO NOT USE with sensitive repositories until security fixes are complete. See [tmp/SECURITY_AUDIT_DETAILED.md](tmp/SECURITY_AUDIT_DETAILED.md) for full details.
+> **⚠️ SECURITY WARNING**: This project is in active development and is **NOT PRODUCTION READY**. A comprehensive security audit identified 30 vulnerabilities - the **3 CRITICAL issues have been FIXED** in v0.1.0, but HIGH priority issues remain. Use with caution. See [docs/SECURITY.md](docs/SECURITY.md) for details.
 
 ## Overview
 
@@ -229,8 +229,6 @@ flutter clean
 flutter run -d macos
 ```
 
-For detailed troubleshooting, see `tmp/build_issue_and_fix.md`.
-
 ### No Repositories Found
 - Ensure the selected directory contains `.git` folders
 - Check repositories aren't too deeply nested
@@ -248,8 +246,8 @@ For detailed troubleshooting, see `tmp/build_issue_and_fix.md`.
 ## Project Status
 
 **Development Phase**: v0.1.0-alpha (Pre-Beta)
-**Production Ready**: ❌ **NOT READY** - Critical security vulnerabilities and missing features
-**Security Status**: 30 vulnerabilities identified (3 CRITICAL, 7 HIGH, 12 MEDIUM, 8 LOW)
+**Production Ready**: ❌ **NOT READY** - HIGH priority security issues and missing features remain
+**Security Status**: 3 CRITICAL fixed, 27 remaining (7 HIGH, 12 MEDIUM, 8 LOW)
 **Test Coverage**: ~5% (10 Flutter tests, 0 Rust tests) - Target: 70% for v1.0
 **Code Quality**: B- (Good architecture, critical fixes needed)
 **Overall Score**: 35/100
@@ -263,11 +261,13 @@ For detailed troubleshooting, see `tmp/build_issue_and_fix.md`.
 - ✅ Batch Operations (Functional but need hardening)
 - ✅ **Documentation**: Comprehensive and well-organized
 
-**❌ Critical Blockers (MUST FIX):**
-- ❌ **VULN-001**: Command Injection (CVSS 9.8 - Remote Code Execution)
-- ❌ **VULN-002**: Sensitive Data Exposure in Errors (CVSS 9.1)
-- ❌ **VULN-003**: Path Traversal via Symlinks (CVSS 8.6)
-- ❌ **Integer Overflow**: Type casts can cause data corruption
+**✅ Fixed in v0.1.0:**
+- ✅ **VULN-001**: Command Injection (CVSS 9.8) - Fixed with URL sanitization
+- ✅ **VULN-002**: Sensitive Data Exposure (CVSS 9.1) - Fixed with error sanitization
+- ✅ **VULN-003**: Path Traversal (CVSS 8.6) - Fixed with path validation
+- ✅ **Integer Overflow**: Fixed with safe type conversion
+
+**❌ Remaining Blockers (MUST FIX):**
 - ❌ **Test Coverage**: 0 Rust tests, minimal Flutter tests
 - ❌ **Missing Diff Viewer**: Cannot review changes before commit
 - ❌ **47 Hardcoded Colors**: Breaks dark theme
@@ -283,40 +283,38 @@ For detailed troubleshooting, see `tmp/build_issue_and_fix.md`.
 
 ### Required Before ANY Production Use
 
-1. **Fix CRITICAL Security** (Week 1-2):
-   - Command injection vulnerability
-   - Error message sanitization
-   - Path traversal TOCTOU race condition
-   - Integer overflow fixes
+1. **✅ Fix CRITICAL Security** (COMPLETED in v0.1.0):
+   - ✅ Command injection vulnerability - FIXED
+   - ✅ Error message sanitization - FIXED
+   - ✅ Path traversal validation - FIXED
+   - ✅ Integer overflow fixes - FIXED
 
-2. **Build Test Suite** (Week 3-5):
+2. **Build Test Suite** (Week 1-3):
    - Rust unit tests (0 → 100+ tests)
    - Flutter widget tests expansion
    - Integration tests
    - Security regression tests
    - Target: 70%+ coverage
 
-3. **Essential Features** (Week 5-6):
+3. **Essential Features** (Week 4-5):
    - Implement diff viewer
    - Add keyboard shortcuts
    - Settings screen
    - Error logging
 
-4. **Code Quality** (Week 7):
+4. **Code Quality** (Week 6):
    - Extract 1041-line mega file
    - Replace 47 hardcoded colors
    - Add autodispose to providers
    - Optimize list rendering
 
-5. **Final Hardening** (Week 8):
+5. **Final Hardening** (Week 7):
    - External security audit
    - Performance testing
    - User acceptance testing
    - Bug fixes
 
-**Realistic timeline to v1.0**: 6-8 weeks with focused development
-
-**See comprehensive audit**: [tmp/COMPREHENSIVE_AUDIT_REPORT.md](tmp/COMPREHENSIVE_AUDIT_REPORT.md)
+**Realistic timeline to v1.0**: 5-7 weeks with focused development
 
 ## Roadmap
 
@@ -376,17 +374,17 @@ Contributions are welcome! Please see [docs/CONTRIBUTING.md](docs/CONTRIBUTING.m
 
 ## Security
 
-**❌ SECURITY WARNING**: A comprehensive security audit has identified **30 vulnerabilities including 3 CRITICAL issues with CVSS scores 9.8, 9.1, and 8.6**.
+**⚠️ SECURITY WARNING**: A comprehensive security audit identified **30 vulnerabilities** in v0.1.0-pre-alpha. The **3 CRITICAL issues** (CVSS 9.8, 9.1, 8.6) have been **FIXED** in v0.1.0. However, **HIGH priority issues remain** (TLS validation, credential security, race conditions).
 
-**DO NOT USE THIS SOFTWARE** with sensitive repositories, in production environments, or with important data until all critical vulnerabilities are fixed.
+**⚠️ USE WITH CAUTION**: While critical vulnerabilities are fixed, this software still requires comprehensive security testing and additional hardening before production use.
 
-### Known Critical Vulnerabilities
+### Critical Vulnerabilities (Fixed in v0.1.0)
 
-1. **VULN-001**: Command Injection (CVSS 9.8) - Remote Code Execution possible
-2. **VULN-002**: Sensitive Data Exposure (CVSS 9.1) - Credentials leaked in errors
-3. **VULN-003**: Path Traversal (CVSS 8.6) - TOCTOU race condition
+1. **✅ VULN-001**: Command Injection (CVSS 9.8) - FIXED with URL sanitization
+2. **✅ VULN-002**: Sensitive Data Exposure (CVSS 9.1) - FIXED with error message sanitization
+3. **✅ VULN-003**: Path Traversal (CVSS 8.6) - FIXED with proper path validation
 
-See full details: [tmp/SECURITY_AUDIT_DETAILED.md](tmp/SECURITY_AUDIT_DETAILED.md)
+**Note**: While critical vulnerabilities have been fixed, the project still has HIGH priority security issues (TLS validation, credential security, race conditions) and requires comprehensive testing before production use.
 
 If you discover additional security vulnerabilities, please see [docs/SECURITY.md](docs/SECURITY.md) for responsible disclosure guidelines.
 
